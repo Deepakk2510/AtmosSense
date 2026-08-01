@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Environment Variables (CRITICAL: Do not commit API keys!)
+.env
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# ML Models (Optional, but usually good to ignore large model files. We will commit these for this project since they are small)
+# ml_models/
+
+# VS Code
+.vscode/

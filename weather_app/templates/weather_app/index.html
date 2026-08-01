@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtmosSense - ML Weather Forecasting</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'weather_app/css/style.css' %}">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="{% if weather_data %}{% if 'rain' in weather_data.description|lower or prediction_data.will_rain %}theme-rainy{% elif 'cloud' in weather_data.description|lower %}theme-cloudy{% else %}theme-sunny{% endif %}{% else %}theme-default{% endif %}">
+
+    <div class="container">
+        <!-- Header -->
+        <header class="glass-panel text-center">
+            <h1><i class="bi bi-cloud-sun"></i> AtmosSense</h1>
+            <p>ML-Driven Weather Forecasting & Predictive Analysis</p>
+        </header>
+
+        <!-- Search Form -->
+        <section class="search-section glass-panel">
+            <form method="POST" action="{% url 'index' %}">
+                {% csrf_token %}
+                <div class="search-box">
+                    <input type="text" name="city" placeholder="Enter city name (e.g., London, Tokyo)" required value="{{ weather_data.city|default_if_none:'' }}">
+                    <button type="submit"><i class="bi bi-search"></i> Predict</button>
+                </div>
+            </form>
+            {% if error_message %}
+            <div class="error-msg">
+                <i class="bi bi-exclamation-triangle"></i> {{ error_message }}
+            </div>
+            {% endif %}
+        </section>
+
+        {% if weather_data and prediction_data %}
+        <div class="dashboard-grid">
+            <!-- Current Weather Card -->
+            <div class="glass-panel weather-card">
+                <h2>Current Conditions in {{ weather_data.city }}</h2>
+                <div class="weather-main">
+                    <img src="{{ weather_data.icon }}" alt="Weather Icon" class="weather-icon">
+                    <div class="temp-display">{{ weather_data.temp }}°C</div>
+                </div>
+                <h3 class="desc">{{ weather_data.description }}</h3>
+                
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <i class="bi bi-droplet"></i>
+                        <span>Humidity: {{ weather_data.humidity }}%</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-wind"></i>
+                        <span>Wind: {{ weather_data.wind_speed }} km/h</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Pressure: {{ weather_data.pressure }} hPa</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ML Predictions Card -->
+            <div class="glass-panel ml-card">
+                <h2><i class="bi bi-cpu"></i> ML Predictions</h2>
+                
+                <div class="prediction-highlight {% if prediction_data.will_rain %}rain-alert{% else %}clear-alert{% endif %}">
+                    {% if prediction_data.will_rain %}
+                        <i class="bi bi-cloud-rain-heavy-fill"></i> High Probability of Rain Soon
+                    {% else %}
+                        <i class="bi bi-sun-fill"></i> Unlikely to Rain Soon
+                    {% endif %}
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="tempChart"></canvas>
+                </div>
+                
+                <p class="insight">
+                    <i class="bi bi-info-circle"></i> Random Forest Regressor expects temperature to reach 
+                    <strong>{{ prediction_data.next_day_temp }}°C</strong>.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Pass data to JS -->
+        {{ prediction_data.hourly_labels|json_script:"chart-labels" }}
+        {{ prediction_data.hourly_temps|json_script:"chart-data" }}
+        
+        <script src="{% static 'weather_app/js/charts.js' %}"></script>
+        {% endif %}
+    </div>
+
+</body>
+</html>

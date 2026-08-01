@@ -1,0 +1,8 @@
+django
+scikit-learn
+pandas
+numpy
+requests
+joblib
+python-dotenv
+tensorflow

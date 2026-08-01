@@ -1,0 +1,122 @@
+/* Base Styles */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --text-color: #ffffff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    transition: background 0.5s ease-in-out;
+    min-height: 100vh;
+}
+
+/* Dynamic Themes */
+body.theme-default { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
+body.theme-sunny { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+body.theme-cloudy { background: linear-gradient(135deg, #8e9eab 0%, #eef2f3 100%); color: #333; }
+body.theme-cloudy .glass-panel { background: rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.2); }
+body.theme-cloudy input { color: #333; border-color: rgba(0,0,0,0.3); }
+body.theme-rainy { background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%); }
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Header */
+.text-center { text-align: center; }
+h1 { margin: 0 0 0.5rem 0; font-weight: 600; font-size: 2.5rem; }
+header p { margin: 0; opacity: 0.8; font-weight: 300; }
+
+/* Search Section */
+.search-section { text-align: center; padding: 1.5rem; }
+.search-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+input[type="text"] {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+    font-size: 1rem;
+    outline: none;
+    font-family: inherit;
+}
+input[type="text"]::placeholder { color: inherit; opacity: 0.7; }
+button {
+    padding: 12px 25px;
+    border-radius: 30px;
+    border: none;
+    background: rgba(255, 255, 255, 0.3);
+    color: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+button:hover { background: rgba(255, 255, 255, 0.5); }
+.error-msg { margin-top: 15px; color: #ff6b6b; font-weight: 600; }
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+@media (max-width: 768px) {
+    .dashboard-grid { grid-template-columns: 1fr; }
+}
+
+/* Weather Card */
+.weather-card { text-align: center; }
+.weather-card h2 { margin-top: 0; font-size: 1.5rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+.weather-main { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0; }
+.weather-icon { width: 100px; height: 100px; }
+.temp-display { font-size: 4rem; font-weight: 600; }
+.desc { text-transform: capitalize; font-weight: 300; margin-top: -10px; margin-bottom: 30px;}
+
+.weather-details { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+.detail-item { display: flex; align-items: center; gap: 15px; font-size: 1.1rem; }
+.detail-item i { font-size: 1.5rem; opacity: 0.8; }
+
+/* ML Card */
+.ml-card h2 { margin-top: 0; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px;}
+.prediction-highlight {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.2rem;
+}
+.rain-alert { background: rgba(255, 99, 132, 0.2); border: 1px solid rgba(255, 99, 132, 0.5); }
+.clear-alert { background: rgba(75, 192, 192, 0.2); border: 1px solid rgba(75, 192, 192, 0.5); }
+.chart-container { position: relative; height: 250px; width: 100%; }
+.insight { margin-top: 20px; text-align: center; font-size: 0.95rem; opacity: 0.9; }
